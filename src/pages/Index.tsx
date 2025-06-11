@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -68,7 +67,7 @@ const NOISE_WORDS = new Set([
   "by", "but", "as", "to", "and", "of", "the", "with", "for", "a", "in", "on", "at", "is", "are", "was", "were"
 ]);
 
-// 10+ Enhanced theme definitions
+// Enhanced theme definitions including cyberpunk variants
 const THEMES = {
   glassmorphism: {
     name: 'Glassmorphism',
@@ -84,6 +83,38 @@ const THEMES = {
       tag: 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm',
       tagSelected: 'bg-white/30 text-white',
       shadow: 'shadow-xl shadow-black/20'
+    }
+  },
+  cyberpunkLight: {
+    name: 'Cyberpunk Light',
+    styles: {
+      background: 'bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50',
+      cardBg: 'bg-white/90 border-cyan-200 shadow-cyan-200/50',
+      text: 'text-gray-900',
+      textSecondary: 'text-gray-700',
+      border: 'border-cyan-200',
+      accent: 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white',
+      accentHover: 'hover:from-cyan-600 hover:to-blue-600',
+      sidebar: 'bg-white/90 border-cyan-200',
+      tag: 'bg-cyan-50 text-cyan-700 hover:bg-cyan-100 border border-cyan-200',
+      tagSelected: 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white',
+      shadow: 'shadow-lg shadow-cyan-200/30'
+    }
+  },
+  cyberpunkDark: {
+    name: 'Cyberpunk Dark',
+    styles: {
+      background: 'bg-gradient-to-br from-gray-900 via-purple-900 to-blue-900',
+      cardBg: 'bg-gray-800/80 border-purple-500/30 shadow-purple-500/20',
+      text: 'text-cyan-300',
+      textSecondary: 'text-purple-300',
+      border: 'border-purple-500/30',
+      accent: 'bg-gradient-to-r from-purple-500 to-cyan-400 text-gray-900',
+      accentHover: 'hover:from-purple-600 hover:to-cyan-500',
+      sidebar: 'bg-gray-800/80 border-purple-500/30',
+      tag: 'bg-gray-700/60 text-cyan-300 hover:bg-purple-500/20 border border-purple-500/30',
+      tagSelected: 'bg-gradient-to-r from-purple-500 to-cyan-400 text-gray-900',
+      shadow: 'shadow-lg shadow-purple-500/20'
     }
   },
   pastelParadise: {
@@ -282,7 +313,7 @@ const Index = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentTheme, setCurrentTheme] = useState<keyof typeof THEMES>('glassmorphism');
+  const [currentTheme, setCurrentTheme] = useState<keyof typeof THEMES>('cyberpunkDark');
   const [fullscreenImage, setFullscreenImage] = useState<ImageData | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -568,7 +599,7 @@ const Index = () => {
 
         {/* Main content */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Enhanced Header */}
+          {/* Enhanced Header with App Name */}
           <div className={`${theme.cardBg} ${theme.border} border-b p-4 ${theme.shadow}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -581,7 +612,7 @@ const Index = () => {
                     <Menu className="h-4 w-4" />
                   </Button>
                 )}
-                <h1 className={`text-2xl font-bold ${theme.text}`}>Enhanced Image Gallery</h1>
+                <h1 className={`text-2xl font-bold ${theme.text}`}>ImageTag Pro</h1>
               </div>
               
               <div className="flex items-center gap-4">
@@ -758,11 +789,12 @@ const Index = () => {
         accept="image/*"
         style={{ display: 'none' }}
         onChange={handleFileInput}
-        webkitdirectory=""
-        directory=""
+        {...({ webkitdirectory: "", directory: "" } as any)}
       />
     </div>
   );
 };
 
 export default Index;
+
+}
