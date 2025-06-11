@@ -15,7 +15,7 @@ const Index = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [currentTheme, setCurrentTheme] = useState<keyof typeof THEMES>('cyberpunkDark');
+  const [currentTheme, setCurrentTheme] = useState<keyof typeof THEMES>('cyberpunk');
   const [fullscreenImage, setFullscreenImage] = useState<ImageData | null>(null);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
