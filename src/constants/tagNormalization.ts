@@ -1,0 +1,58 @@
+
+// Enhanced tag normalization map with more comprehensive coverage
+export const TAG_NORMALIZATION_MAP: Record<string, string> = {
+  "femanized by girl friend": "feminized by girlfriend",
+  "femanized by girlfriend": "feminized by girlfriend",
+  "feminized by girlfreind": "feminized by girlfriend",
+  "femanizaed": "feminization",
+  "femanized": "feminization",
+  "femanizartion": "feminization",
+  "cheated into dress": "cheated into a dress",
+  "cheated into dresses": "cheated into a dress",
+  "chated into a dress": "cheated into a dress",
+  "cheated into the dress": "cheated into a dress",
+  "dressed as girll": "dressed as a girl",
+  "dressed as girl": "dressed as a girl",
+  "dressed like girl": "dressed as a girl",
+  "dreesed ass a women": "dressed as a girl",
+  "dresssed as girl": "dressed as a girl",
+  "dressed as girls": "dressed as a girl",
+  "forced femanization": "forced feminization",
+  "forced feminisation": "forced feminization",
+  "forced fem": "forced feminization",
+  "pretty girls lesson": "pretty girl lesson",
+  "pretty girl lessons": "pretty girl lesson",
+  "fuvked as women": "fucked as a woman",
+  "fucked as woman": "fucked as a woman",
+  "fucked as women": "fucked as a woman",
+  "permanent femanization": "permanent feminization",
+  "permanent feminisation": "permanent feminization",
+  "permanent fem": "permanent feminization",
+  "feminized by sister": "feminized by sister",
+  "feminized by mom": "feminized by mother",
+  "feminized by mother": "feminized by mother",
+  "crossdressed": "crossdressing",
+  "crossdresser": "crossdressing",
+  "sissified": "sissification",
+  "sissy training": "sissy training",
+  "sissy lessons": "sissy training",
+  "maid training": "maid training",
+  "maid outfit": "maid outfit",
+  "french maid": "french maid",
+  "makeup lessons": "makeup lesson",
+  "makeup tutorial": "makeup lesson",
+  "nail polish": "nail polish",
+  "high heels": "high heels",
+  "stockings": "stockings",
+  "pantyhose": "pantyhose",
+  "lingerie": "lingerie",
+  "corset": "corset",
+  "frilly dress": "frilly dress",
+  "pink dress": "pink dress",
+  "wedding dress": "wedding dress"
+};
+
+// Noise words to filter out
+export const NOISE_WORDS = new Set([
+  "by", "but", "as", "to", "and", "of", "the", "with", "for", "a", "in", "on", "at", "is", "are", "was", "were"
+]);
