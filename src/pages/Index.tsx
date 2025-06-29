@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useCallback, useMemo } from 'react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { toast } from '@/hooks/use-toast';
@@ -28,6 +27,9 @@ const Index = () => {
   const handleFolderSelect = useCallback(async () => {
     try {
       if (!fileInputRef.current) return;
+      
+      // Reset the input value to ensure change event fires even for same folder
+      fileInputRef.current.value = '';
       fileInputRef.current.click();
     } catch (error) {
       console.error('Error selecting folder:', error);
@@ -185,12 +187,24 @@ const Index = () => {
   // Show folder selection screen if no images loaded
   if (images.length === 0) {
     return (
-      <FolderSelection
-        onFolderSelect={handleFolderSelect}
-        currentTheme={currentTheme}
-        onThemeChange={setCurrentTheme}
-        theme={theme}
-      />
+      <>
+        <FolderSelection
+          onFolderSelect={handleFolderSelect}
+          currentTheme={currentTheme}
+          onThemeChange={setCurrentTheme}
+          theme={theme}
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          multiple
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={handleFileInput}
+          webkitdirectory=""
+          directory=""
+        />
+      </>
     );
   }
 
