@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Image as ImageIcon } from 'lucide-react';
+import { Heart, Tag } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import { ImageData } from '@/types/gallery';
 
 interface ImageGridProps {
@@ -15,7 +14,7 @@ interface ImageGridProps {
   theme: any;
 }
 
-export const ImageGrid: React.FC<ImageGridProps> = ({
+const ImageGrid = ({
   images,
   favorites,
   onImageClick,
@@ -23,15 +22,20 @@ export const ImageGrid: React.FC<ImageGridProps> = ({
   onTagClick,
   selectedTag,
   theme
-}) => {
+}: ImageGridProps) => {
   if (images.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-96 text-center">
-        <ImageIcon className={`h-16 w-16 ${theme.textSecondary} mb-4`} />
-        <h3 className={`text-xl font-semibold ${theme.text} mb-2`}>No Images Selected</h3>
-        <p className={theme.textSecondary}>
-          Select a folder containing images to get started with enhanced tag extraction
-        </p>
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className={`text-center ${theme.textSecondary}`}>
+          <Tag className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <h3 className="text-lg font-medium mb-2">No Images Found</h3>
+          <p className="text-sm">
+            {selectedTag 
+              ? `No images found with the tag "${selectedTag}"`
+              : 'Select a folder to load images'
+            }
+          </p>
+        </div>
       </div>
     );
   }
@@ -39,56 +43,62 @@ export const ImageGrid: React.FC<ImageGridProps> = ({
   return (
     <div className="space-y-6">
       {images.map((image, index) => (
-        <Card 
-          key={index} 
-          className={`${theme.cardBg} ${theme.border} overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] ${theme.shadow}`}
+        <div
+          key={`${image.url}-${index}`}
+          className={`${theme.cardBg} ${theme.border} border rounded-lg overflow-hidden ${theme.shadow} hover:shadow-lg transition-all`}
         >
-          <CardContent className="p-0">
-            <div className="relative">
-              <div className="aspect-video relative overflow-hidden cursor-pointer" onClick={() => onImageClick(image)}>
-                <img
-                  src={image.url}
-                  alt={image.title}
-                  className="w-full h-full object-contain bg-gray-100 hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onFavoriteToggle(image.url);
-                }}
-                className={`absolute top-2 right-2 p-2 rounded-full backdrop-blur-sm transition-colors ${
-                  favorites.has(image.url) 
-                    ? 'bg-red-500/80 text-white' 
-                    : 'bg-black/20 text-white hover:bg-red-500/80'
-                }`}
-              >
-                <Heart className={`h-4 w-4 ${favorites.has(image.url) ? 'fill-current' : ''}`} />
-              </button>
-            </div>
-            <div className="p-4">
-              <h3 className={`text-lg font-semibold mb-2 ${theme.text}`}>
-                {image.title}
-              </h3>
+          <div className="relative">
+            <img
+              src={image.url}
+              alt={image.title}
+              className="w-full h-auto max-h-96 object-contain bg-gray-50 cursor-pointer"
+              onClick={() => onImageClick(image)}
+              loading="lazy"
+            />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onFavoriteToggle(image.url);
+              }}
+              className={`absolute top-2 right-2 ${
+                favorites.has(image.url)
+                  ? 'text-red-500 hover:text-red-600'
+                  : 'text-gray-400 hover:text-red-500'
+              }`}
+            >
+              <Heart className={`h-4 w-4 ${favorites.has(image.url) ? 'fill-current' : ''}`} />
+            </Button>
+          </div>
+
+          <div className="p-4">
+            <h3 className={`font-medium mb-2 ${theme.text}`}>{image.title}</h3>
+            
+            {image.tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {image.tags.map((tag, tagIndex) => (
-                  <Badge
-                    key={tagIndex}
-                    variant="secondary"
-                    className={`cursor-pointer transition-all duration-200 ${
-                      selectedTag === tag ? theme.tagSelected : theme.tag
-                    } ${theme.shadow} hover:scale-105`}
+                {image.tags.map((tag) => (
+                  <button
+                    key={tag}
                     onClick={() => onTagClick(tag)}
+                    className={`
+                      px-2 py-1 text-xs rounded-md transition-all
+                      ${selectedTag === tag 
+                        ? theme.tagSelected 
+                        : theme.tag
+                      }
+                    `}
                   >
                     {tag}
-                  </Badge>
+                  </button>
                 ))}
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            )}
+          </div>
+        </div>
       ))}
     </div>
   );
 };
+
+export { ImageGrid };

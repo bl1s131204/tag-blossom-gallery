@@ -9,6 +9,7 @@ import { Sidebar } from '@/components/gallery/Sidebar';
 import { Header } from '@/components/gallery/Header';
 import { ImageGrid } from '@/components/gallery/ImageGrid';
 import { FullscreenModal } from '@/components/gallery/FullscreenModal';
+import { FolderSelection } from '@/components/gallery/FolderSelection';
 
 const Index = () => {
   const [images, setImages] = useState<ImageData[]>([]);
@@ -180,6 +181,18 @@ const Index = () => {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [fullscreenImage, closeFullscreen, navigateFullscreen]);
+
+  // Show folder selection screen if no images loaded
+  if (images.length === 0) {
+    return (
+      <FolderSelection
+        onFolderSelect={handleFolderSelect}
+        currentTheme={currentTheme}
+        onThemeChange={setCurrentTheme}
+        theme={theme}
+      />
+    );
+  }
 
   return (
     <div className={`min-h-screen ${theme.background} ${theme.text} transition-all duration-300`}>

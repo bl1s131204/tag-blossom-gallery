@@ -1,8 +1,8 @@
 
 import React from 'react';
+import { Menu, Folder, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Menu, FolderOpen } from 'lucide-react';
 import { THEMES } from '@/constants/themes';
 
 interface HeaderProps {
@@ -19,7 +19,7 @@ interface HeaderProps {
   theme: any;
 }
 
-export const Header: React.FC<HeaderProps> = ({
+const Header = ({
   sidebarOpen,
   onToggleSidebar,
   currentTheme,
@@ -31,64 +31,71 @@ export const Header: React.FC<HeaderProps> = ({
   tagCount,
   favoriteCount,
   theme
-}) => {
+}: HeaderProps) => {
   return (
-    <div className={`${theme.cardBg} ${theme.border} border-b p-4 ${theme.shadow}`}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          {!sidebarOpen && (
-            <Button
-              variant="ghost"
-              onClick={onToggleSidebar}
-              className={theme.text}
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
-          )}
-          <h1 className={`text-2xl font-bold ${theme.text}`}>ImageTag Pro</h1>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          {/* Theme selector */}
-          <Select value={currentTheme} onValueChange={onThemeChange}>
-            <SelectTrigger className={`w-48 ${theme.cardBg} ${theme.border}`}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.entries(THEMES).map(([key, theme]) => (
-                <SelectItem key={key} value={key}>
-                  {theme.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
+    <header className={`${theme.cardBg} ${theme.border} border-b p-4 flex items-center justify-between ${theme.shadow}`}>
+      <div className="flex items-center gap-4">
+        {!sidebarOpen && (
           <Button
-            onClick={onFolderSelect}
-            className={`${theme.accent} ${theme.accentHover}`}
+            variant="ghost"
+            size="sm"
+            onClick={onToggleSidebar}
+            className={`${theme.text} hover:${theme.accentHover}`}
           >
-            <FolderOpen className="mr-2 h-4 w-4" />
-            Select Folder
+            <Menu className="h-4 w-4" />
           </Button>
+        )}
+        
+        <div className="flex items-center gap-2">
+          <h1 className={`text-xl font-bold ${theme.text}`}>Image Gallery</h1>
+          {selectedTag && (
+            <span className={`text-sm ${theme.textSecondary}`}>
+              • Filtered by "{selectedTag}"
+            </span>
+          )}
         </div>
       </div>
-      
-      {/* Results info */}
-      {imageCount > 0 && (
-        <div className={`mt-4 ${theme.textSecondary}`}>
-          {selectedTag ? (
-            <div className="flex justify-between items-center">
-              <p>{filteredCount} images found for: "{selectedTag}"</p>
-              <p>{favoriteCount} favorites total</p>
-            </div>
+
+      <div className="flex items-center gap-4">
+        <div className={`text-sm ${theme.textSecondary} hidden md:block`}>
+          {imageCount > 0 ? (
+            <>
+              {filteredCount === imageCount 
+                ? `${imageCount} images` 
+                : `${filteredCount} of ${imageCount} images`
+              } • {tagCount} tags • {favoriteCount} favorites
+            </>
           ) : (
-            <div className="flex justify-between items-center">
-              <p>{imageCount} total images • {tagCount} unique tags</p>
-              <p>{favoriteCount} favorites</p>
-            </div>
+            'No images loaded'
           )}
         </div>
-      )}
-    </div>
+
+        <Select value={currentTheme} onValueChange={onThemeChange}>
+          <SelectTrigger className={`w-[180px] ${theme.cardBg} ${theme.border} ${theme.text}`}>
+            <div className="flex items-center gap-2">
+              <Palette className="h-4 w-4" />
+              <SelectValue />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            {Object.entries(THEMES).map(([key, theme]) => (
+              <SelectItem key={key} value={key}>
+                {theme.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button
+          onClick={onFolderSelect}
+          className={`${theme.accent} ${theme.accentHover} flex items-center gap-2`}
+        >
+          <Folder className="h-4 w-4" />
+          Select Folder
+        </Button>
+      </div>
+    </header>
   );
 };
+
+export { Header };
